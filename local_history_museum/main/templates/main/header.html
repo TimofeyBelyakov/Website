@@ -1,0 +1,137 @@
+{% load static %}
+
+<div class="row">
+
+    <!-- Left header-->
+    <div class="col-lg-8 col-11 mx-auto mt-4 mb-2">
+        <img class="mb-2 logo-img" src="{% static 'main/images/logo.png' %}" alt="Logo image">
+        <strong>
+            <h2>
+                {{ elements.title }}
+            </h2>
+        </strong>
+        <strong>
+            <h5>
+                {{ elements.subtitle }}
+            </h5>
+        </strong>
+    </div>
+
+    <!-- Right header-->
+    <div class="col-lg-3 col-11 d-flex mx-auto d-flex justify-content-lg-end justify-content-start">
+        <div class="align-self-center d-flex justify-content-start">
+
+            <!-- Languages-->
+            <div class="dropdown mr-1">
+                <button class="btn-blue btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% if view.get_selected_language == 'ru' %}
+                        ru
+                    {% else %}
+                        {{ view.get_selected_language }}
+                    {% endif %}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="background-color: #ffd3c2;">
+
+                    <!-- Output russian language-->
+                    {% if view.get_selected_language != 'ru' %}
+                        <a class="btn-blue dropdown-item d-flex flex-nowrap flex-row justify-content-start" href="
+                            {% if urls.lang == 'main' %}
+                                {% url 'main_ru' %}
+                            {% elif urls.lang == 'region' %}
+                                {% url urls.lang 'ru' urls.region %}{% if page %}?{{ page }}{% endif %}
+                            {% elif urls.lang == 'category' %}
+                                {% url urls.lang 'ru' urls.category %}{% if page %}?{{ page }}{% endif %}
+                            {% elif urls.lang == 'search' %}
+                                {% url urls.lang 'ru' %}?{{ urls.q }}{% if page %}&{{ page }}{% endif %}
+                            {% elif urls.lang == 'article' %}
+                                {% url urls.lang 'ru' urls.region urls.article %}
+                            {% elif urls.lang == 'region_category' %}
+                                {% url urls.lang 'ru' urls.region urls.category %}{% if page %}?{{ page }}{% endif %}
+                            {% else %}
+                                {% url urls.lang 'ru' %}
+                            {% endif %}
+                        ">
+                            <img class="align-self-center mr-1 img-flag" src="{{MEDIA_URL}}{{ 'main/flags/ru.png' }}" alt="flag">
+                            Русский
+                        </a>
+                    {% endif %}
+
+                    <!-- Output foreign languages-->
+                    {% for item in view.get_languages %}
+                        {% if item.language_code != view.get_selected_language %}
+                            <a class="btn-blue dropdown-item d-flex flex-nowrap flex-row justify-content-start" href="
+                                {% if urls.lang == 'main' %}
+                                    {{ item.get_absolute_url }}
+                                {% elif urls.lang == 'region' %}
+                                    {% url urls.lang item.language_code urls.region %}{% if page %}?{{ page }}{% endif %}
+                                {% elif urls.lang == 'category' %}
+                                    {% url urls.lang item.language_code urls.category %}{% if page %}?{{ page }}{% endif %}
+                                {% elif urls.lang == 'search' %}
+                                    {% url urls.lang item.language_code %}?{{ urls.q }}{% if page %}&{{ page }}{% endif %}
+                                {% elif urls.lang == 'article' %}
+                                    {% url urls.lang item.language_code urls.region urls.article %}
+                                {% elif urls.lang == 'region_category' %}
+                                    {% url urls.lang item.language_code urls.region urls.category %}{% if page %}?{{ page }}{% endif %}
+                                {% else %}
+                                    {% url urls.lang item.language_code %}
+                                {% endif %}
+                            ">
+                                <img class="align-self-center mr-1 img-flag" src="{{ item.flag.url }}" alt="flag">
+                                {{ item.language }}
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Regions-->
+            {% if urls.lang != 'main' and urls.lang != 'local_lore' and urls.lang != 'developments' %}
+                <div class="dropdown mr-1">
+                    <button class="btn-blue btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ elements.region }}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="background-color: #ffd3c2;">
+                        {% for item in view.get_not_empty_regions %}
+                            <a class="btn-blue dropdown-item d-flex flex-nowrap flex-row justify-content-start" href="{% url 'region' view.get_selected_language item.url %}">
+                                {{ item.region }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Home button-->
+            {% if urls.lang != 'main' %}
+                <a class="d-flex btn btn-primary btn-sm btn-blue mr-1" href="
+                    {% if urls.lang == 'our_land' or urls.lang == 'local_lore' or urls.lang == 'developments' %}
+                        {% if view.get_selected_language == 'ru' %}
+                            {% url urls.home_ru %}
+                        {% else %}
+                            {% url urls.home_extra view.get_selected_language %}
+                        {% endif %}
+                    {% else %}
+                        {% url 'our_land' view.get_selected_language %}
+                    {% endif %}
+                ">
+                    <div class="align-self-center">
+                        {% if urls.lang == 'our_land' or urls.lang == 'local_lore' or urls.lang == 'developments' %}
+                            {{ elements.btn_home }}
+                        {% else %}
+                            {{ elements.tab }}
+                        {% endif %}
+                    </div>
+                </a>
+            {% endif %}
+
+            <!-- About project-->
+            {% if urls.lang == 'main' %}
+                <a class="d-flex btn btn-primary btn-sm btn-blue" href="">
+                    <div class="align-self-center">
+                        {{ elements.btn_about }}
+                    </div>
+                </a>
+            {% endif %}
+
+        </div>
+    </div>
+</div>

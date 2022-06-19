@@ -1,0 +1,23 @@
+{% load embed_video_tags %}
+
+
+{% if view.get_videos %}
+    {% for item in view.get_videos %}
+        <div class="header-video d-flex flex-nowrap flex-row">
+            <div class="line3 align-self-stretch"></div>
+            <h5 class="align-self-center ml-3 mb-0">{{ item.name_video }}</h5>
+        </div>
+
+        <div class="embed-responsive embed-responsive-16by9">
+            {% if view.get_selected_language == 'ru' %}
+                {% video item.video as my_video %}
+                {% video my_video "small" %}
+                {% endvideo %}
+            {% else %}
+                {% video item.video.video as my_video %}
+                {% video my_video "small" %}
+                {% endvideo %}
+            {% endif %}
+        </div><br>
+    {% endfor %}
+{% endif %}

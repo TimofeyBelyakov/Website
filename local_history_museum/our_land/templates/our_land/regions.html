@@ -1,0 +1,25 @@
+{% extends "our_land/wrapper.html" %}
+
+
+{% block title %}
+    {{ elements.tab }}
+{% endblock %}
+
+
+{% block regions %}
+    <div class="blazons container d-flex flex-wrap flex-row justify-content-start">
+        {% for item in region_list %}
+            <div class="d-flex flex-column align-items-center justify-content-between mx-auto blazon">
+                <a href="{{ item.get_absolute_url }}">
+                    {% if view.get_selected_language == 'ru' %}
+                        <img src="{{ item.blazon.url }}" alt="blazon">
+                    {% else %}
+                        <img src="{{ item.region_rus.blazon.url }}" alt="blazon">
+                    {% endif %}
+                </a>
+
+                <p>{{ item.region }} <br> {{ elements.region }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

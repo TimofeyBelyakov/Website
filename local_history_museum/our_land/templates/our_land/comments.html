@@ -1,0 +1,158 @@
+{% load recaptcha3 %}
+
+
+{% recaptcha_init %}
+{% recaptcha_ready action_name='homepage' %}
+
+<!-- Комментарии-->
+<div class="comments">
+    {% if view.get_comments_count > 0 %}
+        <h3 class="title-comments">{{ elements.comments_title }} ({{ view.get_comments_count }})</h3>
+    {% endif %}
+
+    <ul class="media-list all-comments">
+        <!-- Комментарий (уровень 1) -->
+        {% for comment in view.get_few_comments %}
+            {% if forloop.last %}
+            <li class="media comments last-comment" data-commentId="{{ comment.id }}" data-articleUrl="{{ urls.article }}">
+            {% else %}
+            <li class="media comments">
+            {% endif %}
+                <div class="media-body">
+
+                    <div class="mb-0 media-heading">
+                        <div class="author">
+                            {{ comment.name }}
+                        </div>
+                        <div class="metadata">
+                            <span class="mt-0 email">{{ comment.datetime | date:'d.m.Y H:i' }}</span>
+                        </div>
+                    </div>
+
+                    <div class="media-text text-justify">
+                        {{ comment.text }}
+                    </div>
+
+                    <div class="footer-comment">
+                        <span class="comment-reply">
+                            <a href="#formComment" onclick="addComment('{{ comment.name }}', '{{ comment.id }}')" class="reply">{{ elements.comment_answer }}</a>
+                        </span>
+                    </div>
+
+                    <ul id="{{comment.id}}" class="media-list">
+                        <!-- Комментарий (уровень 2) -->
+                        {% for comm in comment.get_child_comments %}
+                            {% if forloop.last %}
+                            <li class="media child-comments last-child-comment {{comment.id}}" data-childCommentId="{{comm.id}}">
+                            {% else %}
+                            <li class="media child-comments">
+                            {% endif %}
+                                <div class="media-body">
+
+                                    <div class="mb-0 media-heading">
+                                        <div class="author">
+                                            {{ comm.name }}
+                                        </div>
+                                        <div class="metadata">
+                                            <span class="mt-0 email">{{ comm.datetime | date:'d.m.Y H:i' }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="media-text text-justify">
+                                        {{ comm.text }}
+                                    </div>
+
+                                    <div class="footer-comment">
+                                        <span class="comment-reply">
+                                            <a href="#formComment" onclick="addComment('{{ comm.name }}', '{{ comment.id }}')" class="reply">{{ elements.comment_answer }}</a>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    {% if comment.get_child_comments.count >= 1 %}
+                        <ul class="mt-2">
+                            <li>
+                                <a id="{{ comment.id }}btn" onclick="LoadChildComments('{{ comment.id }}', '{{ elements.comment_answer }}', '{{ elements.more_comments }}')" class="mt-3 load-comments-ref">
+                                    {{ elements.more_comments }}
+                                </a>
+                            </li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% if view.get_few_comments.count >= 2 %}
+        <ul class="mt-2">
+            <li>
+                <a id="load-comments" onclick="LoadComments('{{ elements.comment_answer }}', '{{ elements.more_comments }}')" class="mt-2 load-comments-ref">
+                    {{ elements.more_comments }}
+                </a>
+            </li>
+        </ul>
+    {% endif %}
+</div>
+
+<!-- Форма отправки комментария-->
+<form action="" class="mt-4" id="formComment">
+    {% csrf_token %}
+
+    {{ form.parent }}
+
+    <div class="d-sm-flex">
+        <div class="col-sm-6 form-group p-0 editContent">
+            <label for="contactusername" class="editContent">
+                {{ elements.comment_name }}
+            </label>
+            {{ form.name }}
+        </div>
+    </div>
+
+    <div class="form-group editContent">
+        <label for="contactcomment" class="editContent">
+            {{ elements.comment_text }}
+        </label>
+        {{ form.text }}
+    </div>
+    {{ form.captcha }}
+</form>
+
+{% if view.get_selected_language == 'ru' %}
+    <button onclick="sendComment('{{ article.url }}')" class="mt-3 btn btn-blue" data-toggle="modal" data-target="#exampleModal">
+{% else %}
+    <button onclick="sendComment('{{ article.article_rus.url }}')" class="mt-3 btn btn-blue" data-toggle="modal" data-target="#exampleModal">
+{% endif %}
+        {{ elements.comment_send }}
+    </button>
+
+
+<div id="modalGood" class="modal message" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                {{ elements.good_message }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalBad" class="modal message" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                {{ elements.bad_message }}
+            </div>
+            <div class="modal-footer">
+                <button onclick="fadeMessage()" type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

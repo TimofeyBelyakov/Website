@@ -1,0 +1,48 @@
+<div style="height: 40px;"></div>
+<div class="mt-auto d-flex justify-content-center">
+    <ul class="mb-0 pagination">
+        {% if page_obj.has_previous %}
+            {% if page_obj.number|add:'-3' > 1 %}
+                <li class="pagination__item">
+                    <a class="mr-2 btn btn-primary btn-sm btn-blue" href="?{{ urls.category }}{{ urls.q }}page=1">1</a>
+                </li>
+            {% endif %}
+            {% if page_obj.number|add:'-3' >= 3 %}
+                <li class="pagination__item pagination__item--dots">
+                    <a class="mr-2 btn btn-primary btn-sm btn-blue" href="?{{ urls.category }}{{ urls.q }}page={{ page_obj.previous_page_number|add:'-3' }}">
+                        <span class="pagination__link">• • •</span>
+                    </a>
+                </li>
+            {% endif %}
+        {% endif %}
+        {% if paginator.page_range|length > 1 %}
+            {% for i in paginator.page_range %}
+                {% if page_obj.number == i %}
+                    <li class="pagination__item active">
+                        <a class="mr-2 btn btn-primary btn-sm btn-blue pagination__link" href="#" style="background-color: #0362c4; color: white; border-color: black;">{{ i }}</a>
+                    </li>
+                {% elif i > page_obj.number|add:'-4' and i < page_obj.number|add:'4' %}
+                    <li class="pagination__item">
+                        <a class="mr-2 btn btn-primary btn-sm btn-blue pagination__link" href="?{{ urls.category }}{{ urls.q }}page={{ i }}">{{ i }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if page_obj.has_next %}
+            {% if page_obj.number|add:'4' < page_obj.paginator.num_pages %}
+                <li class="pagination__item pagination__item--dots">
+                    <a class="mr-2 btn btn-primary btn-sm btn-blue" href="?{{ urls.category }}{{ urls.q }}page={{ page_obj.next_page_number|add:'3' }}">
+                        <span class="pagination__link">• • •</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if page_obj.number|add:'3' < page_obj.paginator.num_pages %}
+                <li class="pagination__item">
+                    <a class="mr-2 btn btn-primary btn-sm btn-blue pagination__link" href="?{{ urls.category }}{{ urls.q }}page={{ page_obj.paginator.num_pages }}">
+                        {{ page_obj.paginator.num_pages }}
+                    </a>
+                </li>
+            {% endif %}
+        {% endif %}
+    </ul>
+</div>

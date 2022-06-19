@@ -1,0 +1,14 @@
+<div id="carousel_img" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        {% for img in view.get_images %}
+            <li data-target="#carousel_img" data-slide-to="{{ forloop.counter0 }}" class="{% if forloop.counter0 == 0 %} active {% endif %}"></li>
+        {% endfor %}
+    </ol>
+    <div class="carousel-inner">
+        {% for img in view.get_images %}
+            <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}">
+                <img class="d-block w-100" src="{{ img.image.url }}">
+            </div>
+        {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,5 @@
+{% for item in view.get_last_articles %}
+    <div class="mb-2">
+        <a class="nav_link" href="{{ item.get_absolute_url }}" style="text-decoration: underline;">{{ item.title }}</a>
+    </div>
+{% endfor %}

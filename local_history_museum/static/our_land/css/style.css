@@ -1,0 +1,211 @@
+.custom-carousel{
+    max-height: 500px;
+}
+
+.search{
+    width: 75%;
+}
+
+.load-comments-ref{
+    font-size: .8125rem;
+    cursor: pointer;
+    /*margin-left: 1.9rem;*/
+}
+
+.message{
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* Комментарии */
+.media-body .author {
+    display: inline-block;
+    font-size: 1rem;
+    color: #000;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.media-body .metadata {
+    display: inline-block;
+    margin-left: .5rem;
+    color: #777;
+    font-size: .8125rem;
+}
+
+.media-list ul, li{
+    list-style-type: none;
+}
+
+.email{
+    color: #777;
+    font-size: .8125rem;
+}
+
+.footer-comment {
+    color: #777;
+    border-bottom: 1px solid rgba(34, 36, 38, .15);
+}
+
+.vote.plus:hover {
+    color: green;
+}
+
+.vote.minus:hover {
+    color: red;
+}
+
+.vote {
+    cursor: pointer;
+}
+
+.comment-reply a {
+    color: #777;
+}
+
+.comment-reply a:hover, .comment-reply a:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+.devide {
+    padding: 0 4px;
+    font-size: 0.9em;
+}
+
+.media-text {
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+.title-comments {
+    font-size: 1.4rem;
+    font-weight: bold;
+    line-height: 1.5rem;
+    color: rgba(0, 0, 0, .87);
+    margin-bottom: 1rem;
+    padding-bottom: .25rem;
+    border-bottom: 1px solid rgba(34, 36, 38, .15);
+}
+
+.inp-text{
+    height: 100px;
+}
+
+/* Названия-заголовки */
+.header-article{
+    min-height: 70px;
+    background-color:#ffd3c2;
+}
+
+.header-video{
+    min-height: 50px;
+    background-color:#ffd3c2;
+}
+
+/* Гербы */
+.blazons{
+    width: 100%;
+}
+
+.blazon{
+    width: 150px;
+    height: 180px;
+    text-align: center;
+    font-weight: 700;
+}
+
+.blazon img{
+    transition: 0.2s linear;
+    width: 100px;
+    height: 120px;
+}
+
+.blazon img:hover{
+    opacity: 0.5;
+}
+
+/* Карта */
+.map{
+    width: 100%;
+    height: 300px;
+}
+
+/* Лого Youtube */
+.logo-youtube{
+    transition: 0.2s linear;
+    width: 40px;
+    height: 40px;
+}
+
+.logo-youtube:hover{
+    opacity: 0.5;
+}
+
+/* Стрелка прокрутки */
+.scrollup{
+    z-index: 100;
+    right: 50px;
+    bottom: 50px;
+    opacity: 0.7;
+    font-size: 20px;
+    position: fixed;
+    cursor: pointer;
+    display: none;
+    text-align: center;
+}
+
+/* Медиа запросы */
+@media (max-width: 576px) and (min-width: 240px) {
+    .blazon{
+        width: 75px;
+        height: 90px;
+        font-size: 8px;
+    }
+
+    .blazon img{
+        width: 50px;
+        height: 60px;
+    }
+
+    .header-video{
+        min-height: 30px;
+    }
+
+    .scrollup {
+        right: 33px;
+        bottom: 33px;
+        font-size: 10px;
+    }
+
+    .search{
+        width: 50%;
+    }
+}
+
+@media (max-width: 799px) and (min-width: 576px) {
+    .blazon{
+        width: 100px;
+        height: 120px;
+        font-size: 11px;
+    }
+
+    .blazon img{
+        width: 66px;
+        height: 80px;
+    }
+
+    .header-video{
+        min-height: 40px;
+    }
+
+    .scrollup {
+        right: 25px;
+        bottom: 25px;
+        font-size: 13px;
+    }
+
+    .search{
+        width: 50%;
+    }
+}

@@ -1,0 +1,114 @@
+{% extends "our_land/wrapper.html" %}
+{% load static %}
+{% load embed_video_tags %}
+
+
+{% block title %}
+    {% if object.region %}
+        {{ object.region }} {{ elements.region }}
+    {% elif object.category %}
+        {{ object.category }}
+    {% endif %}
+{% endblock %}
+
+
+{% block articles %}
+    {% if article_list %}
+        {% for art in article_list %}
+            <div>
+                {% if forloop.counter0 != 0 %}
+                    <div class="line2"></div>
+                {% endif %}
+
+                <!-- Header article-->
+                <div class="header-article d-flex flex-nowrap flex-row">
+                    <div class="line3 align-self-stretch"></div>
+                    <div class="align-self-center ml-3">
+                        <h2>
+                            <a class="d-flex nav_link" href="{{ art.object.get_absolute_url }}">
+                                <div class="align-self-center">
+                                    {{ art.object.title | safe }}
+                                </div>
+                            </a>
+                        </h2>
+                    </div>
+                </div>
+
+                <!-- Images-->
+                <div id="carousel_img" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        {% for item in art.images %}
+                            <li data-target="#carousel_img" data-slide-to="{{ forloop.counter0 }}" class="{% if forloop.counter0 == 0 %} active {% endif %}"></li>
+                        {% endfor %}
+                    </ol>
+                    <div class="carousel-inner">
+                        {% for item in art.images %}
+                            <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}">
+                                <img class="d-block w-100" src="{{ item.image.url }}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Article-->
+                <br>
+                {% if forloop.counter0 == 0 %}
+                    <div id="article">
+                        {{ art.object.article | safe }}
+                    </div>
+                {% else %}
+                    {{ art.object.article | safe }}
+                {% endif %}
+
+                <!-- Videos-->
+                {% if art.videos %}
+                    {% for item in art.videos %}
+                        <div class="header-video d-flex flex-nowrap flex-row">
+                            <div class="line3 align-self-stretch"></div>
+                            <h5 class="align-self-center ml-3 mb-0">{{ item.name_video }}</h5>
+                        </div>
+
+                        <div class="embed-responsive embed-responsive-16by9">
+                            {% if view.get_selected_language == 'ru' %}
+                                {% video item.video as my_video %}
+                                {% video my_video "small" %}
+                                {% endvideo %}
+                            {% else %}
+                                {% video item.video.video as my_video %}
+                                {% video my_video "small" %}
+                                {% endvideo %}
+                            {% endif %}
+                        </div><br>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <!-- Pagination -->
+        {% include 'main/pagination.html' %}
+
+    {% else %}
+
+        <!-- Empty message-->
+        <div class="text-center">
+            {% if url_lang == 'search' %}
+                {{ elements.empty_search }}
+            {% else %}
+                {{ elements.empty_article }}
+            {% endif %}
+        </div>
+
+    {% endif %}
+{% endblock %}
+
+
+{% block scrollup %}
+    <div class="scrollup btn btn-primary btn-sm btn-blue" style="display: none;">
+        <i class="fa fa-chevron-up"></i>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="{% static 'our_land/js/scroll.js' %}"></script>
+{% endblock %}

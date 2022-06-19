@@ -1,0 +1,83 @@
+{% extends "our_land/wrapper.html" %}
+{% load static %}
+
+
+{% block title %}
+    {{ article.title }}
+{% endblock %}
+
+
+{% block article %}
+    {% if article is not None %}
+
+        <!-- Header article-->
+        <div class="header-article d-flex flex-nowrap flex-row">
+            <div class="line3 align-self-stretch"></div>
+            <div class="align-self-center ml-3">
+                <h2>
+                    {{ article.title | safe }}
+                </h2>
+            </div>
+        </div>
+
+        <!-- Images-->
+        {% include 'our_land/image_view.html' %}
+
+        <!-- Article-->
+        <br>
+        <div id="article">
+            {{ article.article | safe }}
+
+            <div>
+                {% if view.get_contacts.phones %}
+                    <h6>{{ elements.phone }}</h6>
+                    {% for item in view.get_contacts.phones %}
+                        <p class="ml-4">{{ item.telephone }}</p>
+                    {% endfor %}
+                {% endif %}
+
+                {% if view.get_contacts.mails %}
+                    <h6>{{ elements.email }}</h6>
+                    {% for item in view.get_contacts.mails %}
+                        <p class="ml-4">{{ item.email }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Videos-->
+        {% include 'our_land/video_view.html' %}
+
+        <!-- Map-->
+        {% if article.map != '' and article.map is not None or article.article_rus.map != '' and article.article_rus.map is not None %}
+            <div class="line2"></div>
+            <h6>
+                {{ elements.map }}
+            </h6>
+            {{ article.map | safe }}
+            {{ article.article_rus.map | safe }}
+        {% endif %}
+
+        <!-- Comments must be here!-->
+
+    {% else %}
+
+        <!-- Empty message-->
+        <div class="text-center">
+            {{ elements.empty_article }}
+        </div>
+
+    {% endif %}
+{% endblock %}
+
+
+{% block scrollup %}
+    <div class="scrollup btn btn-primary btn-sm btn-blue" style="display: none;">
+        <i class="fa fa-chevron-up"></i>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="{% static 'our_land/js/scroll.js' %}"></script>
+{% endblock %}

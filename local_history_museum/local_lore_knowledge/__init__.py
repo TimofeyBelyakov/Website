@@ -1,0 +1,1 @@
+default_app_config = 'local_lore_knowledge.apps.LocalLoreKnowledgeConfig'

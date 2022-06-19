@@ -1,0 +1,100 @@
+<!doctype html>
+{% load static %}
+
+<html lang="{{ view.get_selected_language }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="{% static 'main/images/icon.jpg' %}" sizes="32x32">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Vollkorn:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'methodical_developments/css/style.css' %}">
+    <title>
+        {{ elements.tab }}
+    </title>
+</head>
+<body class="custom-background">
+    <div class="row mt-sm-4 mb-sm-4 m-0">
+        <div class="col-sm-11 col-12 mx-auto main">
+
+            <!-- Header-->
+            {% include 'main/header.html' %}
+
+            <div class="row mx-auto">
+
+                <!-- Main container-->
+                <div class="col-md-9 d-flex flex-column">
+                    <div class="line2"></div>
+                    <div id="dev_documents" class="d-flex flex-column">
+                        {% for categ in categories %}
+                            {% if categ.count > 0 %}
+                                <div class="row">
+                                    <div class="col-md-10 col-12 mx-auto category">
+                                        {{ categ.object.category }} ({{ categ.count }})
+                                    </div>
+                                    <div class="col-md-9 col-12 mx-auto">
+                                        {% for item in categ.developments %}
+                                            <p>
+                                                <a href="{{ item.object.document.url }}">{{ item.object.filename }}</a>
+                                                {% if item.description is not None and item.description != '' %}
+                                                    ({{ item.description }}, {{ item.object.datetime | date:'d.m.Y H:i' }})
+                                                {% else %}
+                                                    ({{ item.object.datetime | date:'d.m.Y H:i' }})
+                                                {% endif %}
+                                            </p>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <!-- Pagination-->
+                    {% include 'main/pagination.html' %}
+                </div>
+
+                <!-- Filter-->
+                <div class="col-md-3">
+                    <div class="line"></div>
+                    <h6>
+                        {{ elements.title_filter | safe }}
+                    </h6>
+                    <form id="filter" action="{% url 'filter_developments' view.get_selected_language %}" method="get" name="filter">
+                        <ul id="categ_check">
+                            {% for categ in view.get_categories %}
+                            <li>
+                                <input type="checkbox" class="checked form-check-input" name="category" value="{{ categ.category }}">
+                                <span>{{ categ.category }}</span>
+                            </li>
+                            {% endfor %}
+                            <li>
+                                <input type="checkbox" class="checked form-check-input" name="all" value="all">
+                                <span>
+                                    {{ elements.checkbox_all }}
+                                </span>
+                            </li>
+                        </ul>
+                        <button id="search_btn" type="submit" class="btn btn-primary btn-sm ml-5 btn-blue">
+                            {{ elements.btn_search }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Footer-->
+            {% include 'main/footer.html' %}
+        </div>
+    </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script></head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="{% static 'methodical_developments/js/logic.js' %}"></script>
+
+</html>

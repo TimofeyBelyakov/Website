@@ -1,0 +1,13 @@
+<div class="d-flex flex-wrap flex-row justify-content-start">
+    {% for categ in view.get_collected_category %}
+        {% if categ.count > 0 %}
+            <a style="margin: 3px 3px 3px 0px" class="btn btn-primary btn-sm btn-blue" href="
+                {% if urls.lang == 'our_land' or urls.lang == 'category' or urls.lang == 'search' %}
+                    {% url 'category' view.get_selected_language categ.url %}
+                {% else %}
+                    {% url 'region_category' view.get_selected_language urls.region categ.url %}
+                {% endif %}
+            ">{{ categ.category }} ({{ categ.count }})</a>
+        {% endif %}
+    {% endfor %}
+</div>

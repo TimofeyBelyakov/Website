@@ -1,0 +1,16 @@
+<div class="row">
+    <div class="col-11 d-flex align-items-center custom-footer">
+        <div>
+            <a href="
+                {% if view.get_selected_language == 'ru' or view.get_selected_language is None %}
+                    {% url 'main_ru' %}
+                {% else %}
+                    {% url 'main_extra_lang' view.get_selected_language %}
+                {% endif %}
+            ">
+                {{ elements.ref_footer }}
+            </a>
+            © {{ elements.title_footer }}
+        </div>
+    </div>
+</div>
